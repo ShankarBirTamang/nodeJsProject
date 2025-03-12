@@ -1,0 +1,22 @@
+[
+    {
+    "id":1,
+    "userId":1,
+    "title":"First Post Comment"
+},
+    {
+    "id":2,
+    "userId":2,
+    "title":"Second Post Comment"
+},
+    {
+    "id":3,
+    "userId":1,
+    "title":"Third Post comment"
+},
+    {
+    "id":4,
+    "userId":2,
+    "title":"Fourth Post comment"
+}
+]
