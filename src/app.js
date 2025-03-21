@@ -4,6 +4,8 @@ import productRoutes from './routes/productRoute.js';
 import userRoutes from './routes/userRoute.js';
 import bodyParser from 'body-parser';
 import connectDB from './config/database.js';
+import logger from "./middlewares/logger.js"
+import authRoute from "./routes/authRoute.js"
 
 const app = express();
 
@@ -12,8 +14,10 @@ const port = process.env.PORT || 5000;
 
 connectDB();
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
+app.use(logger);
 
 app.get("/",(req , res)=>{
     res.json({
@@ -22,7 +26,7 @@ app.get("/",(req , res)=>{
         port : port
     })
 })
-
+app.use("/api/auth",authRoute)
 app.use("/api/products",productRoutes);
 app.use("/api/users",userRoutes);
 

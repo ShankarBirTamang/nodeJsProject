@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Name is required"], // Name is required with a custom error message
         minlength: [3, "Name must be at least 3 characters"], // Minimum length
-        maxlength: [20, "Name cannot exceed 50 characters"], // Maximum length
+        maxlength: [50, "Name cannot exceed 50 characters"], // Maximum length
         trim: true, // Removes whitespace from beginning & end
     },
     brand:{
@@ -34,6 +34,11 @@ const productSchema = new mongoose.Schema({
     description : String,
     imageUrls:{
         type:[String]
+    },
+    createdBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        required : true,
+        ref : "User"
     }
 });
 

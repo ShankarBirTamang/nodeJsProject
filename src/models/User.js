@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { EMAIL_REGEX , PASSWORD_REGEX } from "../constants/regex.js";
+import { ROLE_ADMIN ,ROLE_MERCHANT , ROLE_USER } from "../constants/roles.js";
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -14,29 +15,38 @@ const userSchema = new mongoose.Schema({
         required: [true, "Email is required"],
         unique: true,
         lowercase: true,
-        match: [/.+\@.+\..+/, "Please enter a valid email"], // Valid email format
-        validate:{
-            validator:(value)=>{
-                return EMAIL_REGEX.test(value);
+        match: [EMAIL_REGEX, "Please enter a valid email"], // Valid email format
+        validate:[
+          {
+            validator:async(value)=>{
+              // Check if email already exists in DB
+              const existingUser = await mongoose.model("User").findOne({ email: value });
+              return !existingUser; // Return false if email exists
             },
-            message:"Invalid email address"
-        }
+            message:"Email is already in use"
+          },
+            {
+                validator: function (value) {
+                    return value.endsWith("@gmail.com"); // Allow only Gmail emails
+                },
+                message: "Only Gmail addresses are allowed"
+            }
+          ]
       },
       password: {
         type: String,
         required: [true, "Password is required"],
         minlength: [6, "Password must be at least 6 characters"],
-        select: false, // Prevents password from being returned in queries
-        match: [PASSWORD_REGEX , 
-            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
-          ]
+        // match: [PASSWORD_REGEX , 
+        //     'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+        //   ]
       },
       role: {
-        type: String,
-        enum: {values:["user", "admin"], // Restrict values
-            message : 'Role must be either "user" or "admin"'       
+        type: [String],
+        enum: {values:[ROLE_ADMIN,ROLE_USER,ROLE_MERCHANT], // Restrict values
+            message : 'Role must be either "user" ,"merchant" or "admin"'       
         },
-        default: "user",
+        default: ROLE_USER,
       },
       profileImageUrl: {
         type: String, // URL to the profile picture
@@ -51,11 +61,22 @@ const userSchema = new mongoose.Schema({
         default: Date.now, // Automatically set creation date
       },
       address : {
-        city : String ,
-        country:String,
+        city: {
+          type: String,
+          required: true,
+        },
+        country: {
+          type: String,
+          default: "Nepal",
+        },
         province : String,
-        city :String,
+        street :String,
+      },
+      phone :{
+        type : [String,"string type"] ,
+        unique : [true , "Phone number must be unique"],
       }
+     
 })
 
 const model = mongoose.model("User", userSchema);
