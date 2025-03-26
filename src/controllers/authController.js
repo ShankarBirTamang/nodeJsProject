@@ -50,4 +50,46 @@ const register = async(req,res)=>{
     }
 }
 
-export  { login ,register};
+const logOut = (req,res) => {
+    res.clearCookie("authToken");
+    res.json({"message":"Logged Out successfully"});
+}
+
+/**
+ * 1. User forgot password
+ * 2. User request for reset password in email
+ * 3. User gets email
+ * 4. Email has reset password link
+ */
+
+const forgotPassword = async (req,res) => {
+    const email = req.body.email;
+    if(!email) return res.status(422).send("Email is required");
+    const data = await authService.forgotPassword(req.body.email);
+    res.json(data);
+}
+
+
+const resetPassword = async (req, res) => {
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    const token = req.query.token;
+    const userId = req.params.userId;
+  
+    if (!password) return res.status(422).send("Password is required.");
+    if (!confirmPassword)
+      return res.status(422).send("Confirm password is required.");
+  
+    if (password != confirmPassword)
+      return res.status(422).send("Passwords do not match.");
+  
+    try {
+      const data = await authService.resetPassword(userId, token, password);
+      console.log(data);
+      res.json(data);
+    } catch (error) {
+      res.status(error.statusCode || 500).send(error.message);
+    }
+  };
+
+export  { login ,register ,logOut,forgotPassword,resetPassword};

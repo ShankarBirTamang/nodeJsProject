@@ -1,5 +1,6 @@
 import User from "../models/User.js"
 import bcrypt from "bcryptjs";
+import ResetPassword from "../models/ResetPassword.js"
 
 const  login = async (data) =>{
     console.log(data);
@@ -46,5 +47,60 @@ const register = async (data) => {
     })
 }
 
+const forgotPassword = async (email) => {
+    const user = await User.findOne({ email });
+  
+    if (!user) {
+      throw {
+        statusCode: 404,
+        message: "User not found.",
+      };
+    }
+  
+    const otp = Math.floor(Math.random() * 1000000);
+  
+    await ResetPassword.create({
+      userId: user?._id,
+      token: otp,
+    });
+  
+    // Send email to user
+    // {{apiUrl}}/api/auth/reset-password/:userId?token=<otp>
+  
+    return { message: "Reset password link has been sent" };
+  };
 
-export default {login ,register};
+  const resetPassword = async (userId, token, password) => {
+    const data = await ResetPassword.findOne({
+      userId,
+      expiresAt: { $gt: Date.now() },
+    });
+  
+    if (!data || data.token !== token) {
+      throw {
+        statusCode: 400,
+        message: "Invalid token.",
+      };
+    }
+  
+    if (data.isUsed) {
+      throw {
+        statusCode: 400,
+        message: "Token already used.",
+      };
+    }
+  
+    const hashedPassword = bcrypt.hashSync(password);
+  
+    await User.findByIdAndUpdate(userId, {
+      password: hashedPassword,
+    });
+  
+    await ResetPassword.findByIdAndUpdate(data._id, {
+      isUsed: true,
+    });
+  
+    return { message: "Password reset successful." };
+  }; 
+
+export default {login ,register,forgotPassword ,resetPassword};

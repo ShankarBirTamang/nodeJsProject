@@ -48,7 +48,9 @@ const getAllUser = async()=>{
     return await User.find();
 }
 const getAllCustomer = async()=>{
-    return await User.find();
+    return await User.find({
+      role:[ROLE_USER]
+    });
 }
 
 const getUserByID = async(id)=>{
@@ -63,4 +65,8 @@ const deleteUser = async(id)=>{
     return await User.findByIdAndDelete(id);
 }
 
-export  default {createUser ,createMerchant, getAllUser ,getAllCustomer , getUserByID , updateUser , deleteUser};
+const uploadProfileImage = () => {
+  
+  console.log("Upload profile Image");
+}
+export  default {createUser ,createMerchant, getAllUser ,getAllCustomer , getUserByID , updateUser , deleteUser,uploadProfileImage};

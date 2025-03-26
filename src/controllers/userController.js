@@ -82,4 +82,8 @@ const deleteUser = async (req, res) => {
     }
 }
 
-export  {createUser, createMerchant,getAllUser ,getAllCustomer, getUserByID ,updateUserByID , deleteUser};
+const uploadProfileImage = (req,res)=>{
+    res.send("Uploaded...");
+}
+
+export  {createUser, createMerchant,getAllUser ,getAllCustomer, getUserByID ,updateUserByID ,uploadProfileImage, deleteUser};
