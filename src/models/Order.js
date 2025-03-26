@@ -24,8 +24,8 @@ const orderSchema = new mongoose.Schema({
   totalPrice: { type: Number, required: true },
   status: {
     type: String,
+    enum: [ORDER_STATUS_PENDING, ORDER_STATUS_CONFIRMED, ORDER_STATUS_SHIPPED, ORDER_STATUS_DELIVERED], 
     default: ORDER_STATUS_PENDING,
-    enum: [ORDER_STATUS_PENDING, ORDER_STATUS_CONFIRMED , ORDER_STATUS_SHIPPED , ORDER_STATUS_DELIVERED],
   },
   shippingAddress: {
     city: {
