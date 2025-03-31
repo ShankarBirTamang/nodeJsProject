@@ -1,0 +1,59 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      const products = [ { name: "Premium Watch", description: "Stylish and
+      elegant watch for every occasion.", price: "$199.99", image:
+      "https://via.placeholder.com/300" }, { name: "Smartphone", description:
+      "Latest model with high-speed processor and camera.", price: "$699.99",
+      image: "https://via.placeholder.com/300" }, { name: "Wireless Headphones",
+      description: "Noise-canceling headphones with high-quality sound.", price:
+      "$149.99", image: "https://via.placeholder.com/300" } ];
+    </script>
+  </head>
+  <body class="bg-gray-50">
+    <nav class="bg-white shadow-md py-4 fixed w-full top-0 z-10">
+      <div class="container mx-auto flex justify-between items-center px-6">
+        <h1 class="text-2xl font-bold text-blue-600">ShopEase</h1>
+        <button
+          class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2"
+        >
+          <span>🛒</span>
+          Cart
+        </button>
+      </div>
+    </nav>
+    <div class="container mx-auto p-6 mt-20">
+      <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Our Products
+      </h1>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+
+        {{#each products}}
+
+          <div
+            class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2"
+          >
+            <img
+              src="https://png.pngtree.com/thumb_back/fh260/background/20230222/pngtree-realistic-blue-product-podium-display-background-image_1687586.jpg"
+              alt="Product"
+              class="w-full h-56 object-cover rounded-md"
+            />
+            <h2
+              class="text-xl font-semibold mt-4 text-gray-900"
+            >{{this.name}}</h2>
+            <p class="text-gray-600 mt-2">{{this.description}}</p>
+            <p class="text-lg font-bold mt-2 text-blue-600">{{this.price}}</p>
+            <button
+              class="mt-4 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 rounded-md hover:scale-105 transition"
+            >Add to Cart</button>
+          </div>
+        {{/each}}
+
+      </div>
+    </div>
+  </body>
+</html>

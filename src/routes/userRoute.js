@@ -12,7 +12,7 @@ router.get("/",auth, roleBasedAuth(ROLE_ADMIN),getAllUser);
 router.get("/customers",auth, roleBasedAuth(ROLE_MERCHANT),getAllCustomer);
 router.get("/:id",auth,getUserByID);
 router.put("/:id",auth, roleBasedAuth(ROLE_ADMIN),updateUserByID);
-router.put("/:id/upload",auth, uploadProfileImage);
+router.put("/profile/upload",auth, uploadProfileImage);
 router.delete("/:id",auth, roleBasedAuth(ROLE_ADMIN),deleteUser)
 // router.post("/test",auth,(req,res)=>{
 //     res.send("Test auth token");
