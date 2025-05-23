@@ -32,8 +32,10 @@ app.use("/page", viewRoute);
 
 app.get("/", (req, res) => {
   res.json({
+    name: "nodejs-Project",
     status: "OK",
     version: "1.0.0",
+    url: "https://sankar-node.vercel.app",
     port: port,
   });
 });
